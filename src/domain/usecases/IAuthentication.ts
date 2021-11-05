@@ -1,8 +1,8 @@
-export interface Authentication {
-    auth: (authentication: Authentication.Params) => Promise<Authentication.Results>
+export interface IAuthentication {
+    auth: (authentication: IAuthentication.Params) => Promise<IAuthentication.Results>
 }
 
-export namespace Authentication {
+export namespace IAuthentication {
     export type Params = {
         email: string,
         password: string
