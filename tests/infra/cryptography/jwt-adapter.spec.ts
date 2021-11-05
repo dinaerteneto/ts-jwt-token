@@ -1,7 +1,6 @@
 import { JwtAdapter } from '@/infra/cryptography'
 import { throwError } from '@/tests/domain'
 import jwt from 'jsonwebtoken'
-import { textChangeRangeIsUnchanged } from 'typescript'
 
 jest.mock('jsonwebtoken', () => ({
     async sign (): Promise<string> {
