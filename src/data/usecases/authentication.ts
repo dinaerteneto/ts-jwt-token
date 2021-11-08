@@ -16,7 +16,6 @@ export class Authencation implements IAuthentication {
             if (isValid) {
                 const accessToken = await this.encrypter.encrypt(account.id)
                 return {
-                    id: account.id,
                     token: accessToken
                 }
             }

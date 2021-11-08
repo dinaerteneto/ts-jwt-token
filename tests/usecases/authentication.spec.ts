@@ -102,7 +102,7 @@ describe('Authentication UseCase', () => {
         test('Should return token with correct id', async () => {
             const { sut } = makeSut()
             const encrypt = await sut.auth(mockAuthencation)
-            expect(encrypt).toEqual({id: "valid_id", token: "string_encrypted"})
+            expect(encrypt).toEqual({token: "string_encrypted"})
         })
         test('Should throw if Encrypter throws', async () => {
             const { encrypterStub, sut } = makeSut()

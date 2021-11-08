@@ -8,7 +8,6 @@ export namespace IAuthentication {
         password: string
     }
     export type Results = {
-        id: string,
         token: string
     }
 }
