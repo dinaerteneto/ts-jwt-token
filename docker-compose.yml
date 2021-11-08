@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+  postgres:
+    image: postgres:14.0
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=ts-jwt-token
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - PGDATA=/var/lib/postgresql/data
+    env_file:
+      - ./.env
