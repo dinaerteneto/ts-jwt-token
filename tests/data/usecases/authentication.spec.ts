@@ -1,5 +1,5 @@
 import { HashComparer, Encrypter } from "@/data/protocols/cryptography"
-import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-by-email-repository"
+import { LoadAccountByEmailRepository } from "@/data/protocols/db/account"
 import { Authencation } from "@/data/usecases/authentication"
 import { throwError } from "@/tests/domain"
 
