@@ -1,6 +1,6 @@
 import { IAuthentication } from "@/domain/usecases"
 import { LoginController } from "@/presentation/controllers"
-import { unauthorized } from "@/presentation/http"
+import { unauthorized, ok } from "@/presentation/http"
 
 class AuthenticationStub implements IAuthentication {
     async auth(authentication: IAuthentication.Params): Promise<IAuthentication.Results> {
@@ -39,7 +39,13 @@ describe('Login Controller', () => {
         })
         expect(httpResponse).toEqual(unauthorized())
     })
-    /*
-    test('Should return 200 if valid credentials are provided', async () => {})
-    */
+    test('Should return 200 if valid credentials are provided', async () => {
+        const { authenticationStub, sut } = makeSut()
+        jest.spyOn(authenticationStub, 'auth')
+        const httpResponse = await sut.handle({
+            email: 'valid-email@email.com',
+            password: 'valid-password'
+        })
+        expect(httpResponse).toEqual(ok({'token': 'valid_token'}))
+    })
 })
