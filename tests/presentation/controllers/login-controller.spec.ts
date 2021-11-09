@@ -1,6 +1,7 @@
 import { IAuthentication } from "@/domain/usecases"
 import { LoginController } from "@/presentation/controllers"
 import { unauthorized, ok } from "@/presentation/http"
+import { throwError } from "@/tests/domain"
 
 class AuthenticationStub implements IAuthentication {
     async auth(authentication: IAuthentication.Params): Promise<IAuthentication.Results> {
@@ -47,5 +48,14 @@ describe('Login Controller', () => {
             password: 'valid-password'
         })
         expect(httpResponse).toEqual(ok({'token': 'valid_token'}))
+    })
+    test('Should throws if Authenticate throw', async () => {
+        const { authenticationStub, sut } = makeSut()
+        jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(throwError)
+        const httpResponse = sut.handle({
+            email: 'valid-email@email.com',
+            password: 'valid-password'
+        })
+        await expect(httpResponse).rejects.toThrow()
     })
 })
