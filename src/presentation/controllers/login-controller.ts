@@ -1,5 +1,6 @@
 import { IAuthentication } from "@/domain/usecases";
 import { Controller, HttpResponse } from "@/presentation/protocols";
+import { ok, unauthorized } from "@/presentation/http";
 
 export class LoginController implements Controller{
 
@@ -7,10 +8,10 @@ export class LoginController implements Controller{
 
     async handle(httpRequest: any): Promise<HttpResponse> {
         const { email, password } = httpRequest
-        const auth = this.authentication.auth({ email, password })
-        return {
-            statusCode: 200,
-            body: auth
+        const auth = await this.authentication.auth({ email, password })
+        if (!auth) {
+            return unauthorized()
         }
+        return ok(auth)
     }
 }
