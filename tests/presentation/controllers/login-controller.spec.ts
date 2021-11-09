@@ -1,5 +1,6 @@
 import { IAuthentication } from "@/domain/usecases"
 import { LoginController } from "@/presentation/controllers"
+import { unauthorized } from "@/presentation/http"
 
 class AuthenticationStub implements IAuthentication {
     async auth(authentication: IAuthentication.Params): Promise<IAuthentication.Results> {
@@ -7,12 +8,20 @@ class AuthenticationStub implements IAuthentication {
     }
 }
 
+const makeSut = () => {
+    const authenticationStub = new AuthenticationStub()
+    const sut = new LoginController(authenticationStub)
+    return {
+        authenticationStub,
+        sut
+    }
+}
+
 describe('Login Controller', () => {
     test('Should call Authenticate with correct values', async () => {
-        const authenticationStub = new AuthenticationStub()
-        const sut = new LoginController(authenticationStub)
+        const { authenticationStub, sut } = makeSut()
         const authSpy = jest.spyOn(authenticationStub, 'auth')
-        sut.handle({
+        await sut.handle({
             email: 'valid-email@email.com',
             password: 'valid-password'
         })
@@ -21,8 +30,16 @@ describe('Login Controller', () => {
             password: 'valid-password'
         })
     })
+    test('Should return 401 if invalid credentials are provided', async () => {
+        const { authenticationStub, sut } = makeSut()
+        jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(Promise.resolve(null))
+        const httpResponse = await sut.handle({
+            email: 'valid-email@email.com',
+            password: 'valid-password'
+        })
+        expect(httpResponse).toEqual(unauthorized())
+    })
     /*
-    test('Should return 401 if invalid credentials are provided', async () => {})
     test('Should return 200 if valid credentials are provided', async () => {})
     */
 })
